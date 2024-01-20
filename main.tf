@@ -36,9 +36,9 @@ locals {
 }
 
 resource "aws_s3_object" "file" {
-  for_each     = fileset(path.module, "content/**/*.{html,css,js}")
+  for_each     = fileset(path.module, "content/**/*.{html,css,js,mp4}")
   bucket       = data.aws_s3_bucket.bucket.id
-  key          = replace(each.value, "/^content/videos/", "/videos/")
+  key          = replace(each.value, "/^content//", "")
   source       = each.value
   content_type = lookup(local.content_types, regex("\\.[^.]+$", each.value), null)
   etag         = filemd5(each.value)
