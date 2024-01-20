@@ -37,7 +37,7 @@ locals {
 
 resource "aws_s3_object" "file" {
   for_each     = fileset(path.module, "content/**/*.{html,css,js}")
-  bucket       = data.bucket.id
+  bucket       = data.bucket
   key          = replace(each.value, "/^content//", "")
   source       = each.value
   content_type = lookup(local.content_types, regex("\\.[^.]+$", each.value), null)
