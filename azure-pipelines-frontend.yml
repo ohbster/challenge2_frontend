@@ -10,10 +10,30 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- task: TerraformInstaller@1
+  inputs:
+    terraformVersion: 'latest'
+  displayName: 'Install Terraform'
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'aws'
+    command: 'init'
+    backendServiceAWS: '(Project 2) AWS for Terraform'
+    backendAWSBucketName: 'ohbster-project2-ado-terraform'
+    backendAWSKey: 'dev/frontend/terraform.tfstate'
+  displayName: 'Initialize Terraform'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'aws'
+    command: 'apply'
+    commandOptions: '--auto-approve'
+    environmentServiceNameAWS: '(Project 2) AWS for Terraform'
+  displayName: 'Apply Terraform'
+# - script: echo Hello, world!
+#   displayName: 'Run a one-line script'
+
+# - script: |
+#     echo Add other tasks to build, test, and deploy your project.
+#     echo See https://aka.ms/yaml
+#   displayName: 'Run a multi-line script'
