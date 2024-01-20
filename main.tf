@@ -31,12 +31,13 @@ locals {
     ".html" : "text/html",
     ".css" : "text/css",
     ".js" : "text/javascript",
-    ".mp4" : "video/mp4"
+    ".mp4" : "video/mp4",
+    ".png" : "image/png"
   }
 }
 
 resource "aws_s3_object" "file" {
-  for_each     = fileset(path.module, "content/**/*.{html,css,js,mp4}")
+  for_each     = fileset(path.module, "content/**/*.{html,css,js,mp4,png}")
   bucket       = data.aws_s3_bucket.bucket.id
   key          = replace(each.value, "/^content//", "")
   source       = each.value
